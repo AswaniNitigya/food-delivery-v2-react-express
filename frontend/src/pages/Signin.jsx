@@ -65,6 +65,7 @@ function Signin() {
       <div
         className={`bg-white rounded-xl shadow-1g w-full max-w-md p-8 border-2 `}
         style={{ border: ` 1px solid ${borderColor}` }}
+        
       >
         <h1
           className={`text-3xl font-bold mb-2`}
