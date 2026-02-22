@@ -4,6 +4,9 @@ import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../utils/firebase";
+
 function Signup() {
   const primaryColor = "#ff4d2d";
   const hoverColor = "#e64323";
@@ -17,6 +20,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
+
 
   // handle the signup via api
 
@@ -47,7 +51,7 @@ function Signup() {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     try {
-      const {data} = await axios.post(
+      const { data } = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/auth/google-auth`,
         {
           fullname: result.user.displayName,

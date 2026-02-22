@@ -7,12 +7,13 @@ const port = process.env.PORT || 8000
 
 import connectDB from "./config/db.connect.js"
 connectDB()
-import authRouter from "./routes/auth.routes.js"
-
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
 })); 
+
+import authRouter from "./routes/auth.routes.js"
+
 app.use(express.json()) // convert data received by backend in to json format 
 app.use("/api/auth", authRouter)
 

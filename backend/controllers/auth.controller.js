@@ -133,6 +133,34 @@ export const verifyOTP = async (req, res) => {
   }
 };
 
+
+export const googleAuth = async (req,res)=>{
+    try {
+      const {fullname,email,mobile,role}  = req.body
+      let user = await User.findOne({email})
+      if (!user) {
+          user= await User.create({
+            fullname,
+            email,
+            mobile,
+            role
+          })
+      }
+      const token = await generateToken(user._id);
+      // to store data in cookie
+      res.cookie("token", token, {
+      secure: false, // to run in http site also
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milisecond
+      httpOnly: true,
+    });
+    console.log("sign in with google backend hit");
+    return res.status(200).json(user)
+    } catch (error) {
+      return res.status(400).json({ message: "error in google auth" });
+    }
+}
+
 export const resetPassword = async (req, res) => {
   try {
     const { email, newpassword } = req.body;
