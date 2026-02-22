@@ -99,6 +99,7 @@ export const sendOTP = async (req, res) => {
     user.isOTPVerified = false; // waise toh already false hi tha
     await user.save();
     console.log("Before sending mail");
+    // using mail.js utils file
     await sendOtpMail(email, otp);
     console.log("After sending mail");
     return res.status(200).json({ message: "Otp send succesfully" });

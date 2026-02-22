@@ -1,33 +1,40 @@
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
 
+ const sendOtpMail = async (clientEmail, otp) => {
+  try {
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
+    // Mail options
+    const mailOptions = {
+      from: `"Food App V2" <${process.env.EMAIL_USER}>`,
+      to: clientEmail,
+      subject: "OTP Verification",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h2>OTP Verification</h2>
+          <p>Your OTP for verification is:</p>
+          <h1 style="color: #e53900;">${otp}</h1>
+          <p>This OTP is valid for 5 minutes.</p>
+        </div>
+      `,
+    };
 
-// Create a transporter using SMTP configuration for Gmail.
-const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'clifford.rath22@ethereal.email',
-        pass: 'kcW52BFUrngcwWejzS'
-    }
-});
+    // Send mail
+    const info = await transporter.sendMail(mailOptions);
 
+    console.log("Email sent:", info.messageId);
+    return true;
 
-
-
-// Send an email using async/await
-const sendOtpMail = async (to,OTP) => {
-// console.log("EMAIL:", process.env.EMAIL);
-// console.log("PASS:", process.env.EMAIL_PASS);
-  const info = await transporter.sendMail({
-    from: "nitigya",
-    to,
-    subject: "Reset your password",
-    text: "Hello world?", // Plain-text version of the message
-    html: `<p>Your otp for password reset is ${OTP}</p>`, // HTML version of the message
-  });
-
-  console.log("Message sent:", info.messageId);
-}
-
+  } catch (error) {
+    console.error("Email sending error:", error);
+    return false;
+  }
+};
 export default sendOtpMail
