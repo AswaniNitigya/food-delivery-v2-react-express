@@ -21,6 +21,7 @@ function Signin() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [err,setErr] =useState("")
 
   // handle the Signin via api
 
@@ -35,8 +36,10 @@ function Signin() {
         },
         { withCredentials: true },
       );
+      setErr("")
       console.log(result);
     } catch (error) {
+      setErr(error.response.data.message)
       console.log(error.response?.data?.message || error.message);
     }
   };
@@ -56,7 +59,9 @@ function Signin() {
         { withCredentials: true },
       );
       console.log(data);
+      setErr("")
     } catch (error) {
+      setErr(error.response.data.message)
       console.log(error);
     }
   };
@@ -80,6 +85,8 @@ function Signin() {
         <p className="text-gray-600 mb-8">
           Create your account to get started{" "}
         </p>
+      {/* Error message here */}
+        <p className="text-red-500 pb-2 text-center">{err?`* ${err.toLocaleUpperCase()}`:""}</p>
 
         {/* Creating form for sign in  */}
 

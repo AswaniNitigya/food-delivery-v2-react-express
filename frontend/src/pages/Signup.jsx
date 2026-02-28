@@ -20,7 +20,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
-
+  const [err,setErr] =useState("")
 
   // handle the signup via api
 
@@ -39,14 +39,16 @@ function Signup() {
         { withCredentials: true },
       );
       console.log(result);
+      setErr("")
     } catch (error) {
+      setErr(error.response.data.message)
       console.log(error.response?.data?.message || error.message);
     }
   };
 
   const handleGoogleAuth = async () => {
     if (!mobile) {
-      return alert("mobile number is req");
+      setErr("mobile number is required ")
     }
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -61,9 +63,11 @@ function Signup() {
         },
         { withCredentials: true },
       );
+      setErr("")
       console.log(data);
     } catch (error) {
       console.log(error);
+      setErr("Google auth failed")
     }
   };
 
@@ -85,6 +89,9 @@ function Signup() {
         <p className="text-gray-600 mb-8">
           Create your account to get started{" "}
         </p>
+
+        {/* Error message here */}
+        <p className="text-red-500 pb-2 text-center">{err?`* ${err.toLocaleUpperCase()}`:""}</p>
 
         {/* Creating form for sign up  */}
 
