@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/token.js";
 import sendOtpMail from "../utils/mail.js";
+
 export const signup = async (req, res) => {
   try {
     const { fullname, email, password, mobile, role } = req.body;
@@ -15,7 +16,7 @@ export const signup = async (req, res) => {
     }
     console.log(mobile);
     console.log(mobile.length);
-    if (!mobile.length === 10) {
+    if (!(mobile.length === 10)) {
       return res.status(400).json({ message: "mobile must be 10 digit long " });
     }
 
@@ -79,6 +80,7 @@ export const signin = async (req, res) => {
 export const signout = async (req, res) => {
   try {
     res.clearCookie("token"); // just deletes the cookie store as token
+    console.log("signout triggered");
     return res.status(200).json({ message: "Sign out done " });
   } catch (error) {
     return res.status(404).json({ message: "Sign out not possible" });

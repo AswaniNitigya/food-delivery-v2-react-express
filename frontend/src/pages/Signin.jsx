@@ -6,6 +6,8 @@ import axios from "axios";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../utils/firebase";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 
 // importing icons
@@ -22,7 +24,7 @@ function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err,setErr] =useState("")
-
+  const dispatch = useDispatch()
   // handle the Signin via api
 
   const handleSignin = async (e) => {
@@ -37,7 +39,8 @@ function Signin() {
         { withCredentials: true },
       );
       setErr("")
-      console.log(result);
+      console.log(result.data);
+      dispatch(setUserData(result.data))
     } catch (error) {
       setErr(error.response.data.message)
       console.log(error.response?.data?.message || error.message);
@@ -59,6 +62,7 @@ function Signin() {
         { withCredentials: true },
       );
       console.log(data);
+      dispatch(setUserData(data))
       setErr("")
     } catch (error) {
       setErr(error.response.data.message)
